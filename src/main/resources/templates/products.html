@@ -21,12 +21,15 @@
 </div>
 <hr>
 <h3>Создать новый товар</h3>
-<form th:action="@{/product/create}" method="post">
+<form th:action="@{/product/create}" method="post" enctype="multipart/form-data">
     Название объявления: <input type="text" th:name="title"/><br>
     Описание объявления: <input type="text" th:name="description"/><br>
     Цена: <input type="number" th:name="price"/><br>
     Город: <input type="text" th:name="city"/><br>
     Имя: <input type="text" th:name="author"/><br>
+    Первая фотография: <input type="file" th:name="file1"/><br>
+    Вторая фотография: <input type="file" th:name="file2"/><br>
+    Третья фотография: <input type="file" th:name="file3"/><br>
     <input type="submit" value="Добавить товар"/>
 </form>
 </body>

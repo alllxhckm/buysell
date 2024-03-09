@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>BUYSELL</title>
 </head>
@@ -16,8 +16,11 @@
 <b>Цена: </b><span th:text="${product.price}"></span><br>
 <b>Город: </b><span th:text="${product.city}"></span><br>
 <b>Автор: </b><a th:href="@{/user/{id}(id=${product.user.id})}"> <span th:text="${product.user.name}"></span></a><br>
-<form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
-    <input type="submit" value="Удалить товар"/>
-</form>
+<div sec:authorize="hasRole('ADMIN')">
+    <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
+        <input type="submit" value="Удалить товар"/>
+    </form>
+</div>
+
 </body>
 </html>

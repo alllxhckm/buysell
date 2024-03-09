@@ -4,16 +4,20 @@
     <title>BUYSELL</title>
 </head>
 <body>
-<h1>BUYSELL</h1>
+<h1>BUYSELL | <a th:href="@{/login}">Войти</a></h1>
+<form action="/logout" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" value="Выйти"/>
+</form>
 <hr>
-<h4>Товары со всей России</h4>
+<h4>Товары со всей Беларуси</h4>
 <form th:action="@{/}" method="get">
     Поиск по названию объявления: <input type="text" th:name="title"/><br>
     <input type="submit" value="Поиск"/>
 </form>
 <div th:each="product : ${products}">
     <div>
-        <p><b th:text="${product.title}"></b> <span th:text="${product.price}"></span> руб. | <a th:href="@{/product/{id}(id=${product.id})}">Подробнее...</a></p>
+        <p><b th:text="${product.title}"></b> <span th:text="${product.price}"></span> BYN | <a th:href="@{/product/{id}(id=${product.id})}">Подробнее...</a></p>
     </div>
 </div>
 <div th:if="${#lists.isEmpty(products)}">

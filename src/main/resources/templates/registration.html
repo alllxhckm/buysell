@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BUYSELL</title>
+</head>
+<body>
+<h1>BUYSELL</h1><hr>
+<h4>Регистрация</h4>
+<form th:action="@{/registration}" method="post">
+    Имя пользователя: <input type="text" th:name="name" field="${name}"><br><br>
+    Эл. почта: <input type="email" name="email" field="${email}"><br><br>
+    Номер телефона: <input type="text" name="phoneNumber" field="${phoneNumber}"><br><br>
+    Пароль: <input type="password" name="password" field="${password}"><br><br>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" th:value="Регистрация"/>
+</form>
+<div th:if="${errorMessage}" style="color: red">
+    <h2 th:text="${errorMessage}"></h2>
+</div>
+</body>
+</html>

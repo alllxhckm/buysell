@@ -4,15 +4,28 @@
     <title>BUYSELL</title>
 </head>
 <body>
-<h1>BUYSELL | <a th:href="@{/login}">Войти</a></h1>
-<form action="/logout" method="post">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="submit" value="Выйти"/>
-</form>
+<h1>BUYSELL</h1><hr>
+<div>
+    <div th:switch="${user.email}">
+        <div th:case="null">
+            <!-- Если user.email равно null, показать ссылку на вход -->
+            <a th:href="@{/login}">Войти</a>
+        </div>
+        <div th:case="*">
+            <!-- Если user.email не равно null, показать информацию о пользователе и форму выхода -->
+            <h3>Имя пользователя: <i th:text="${user.name}"></i></h3>
+            <form action="/logout" method="post">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input type="submit" value="Выйти"/>
+            </form>
+        </div>
+    </div>
+</div>
+
 <hr>
 <h4>Товары со всей Беларуси</h4>
 <form th:action="@{/}" method="get">
-    Поиск по названию объявления: <input type="text" th:name="title"/><br>
+    Поиск по названию объявления: <input type="text" th:name="title"/>
     <input type="submit" value="Поиск"/>
 </form>
 <div th:each="product : ${products}">
@@ -23,6 +36,7 @@
 <div th:if="${#lists.isEmpty(products)}">
     <h3>Товаров нет</h3>
 </div>
+<div th:if="${user.email != null}">
 <hr>
 <h3>Создать новый товар</h3>
 <form th:action="@{/product/create}" method="post" enctype="multipart/form-data">
@@ -30,11 +44,12 @@
     Описание объявления: <input type="text" th:name="description"/><br>
     Цена: <input type="number" th:name="price"/><br>
     Город: <input type="text" th:name="city"/><br>
-    Имя: <input type="text" th:name="author"/><br>
     Первая фотография: <input type="file" th:name="file1"/><br>
     Вторая фотография: <input type="file" th:name="file2"/><br>
     Третья фотография: <input type="file" th:name="file3"/><br>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Добавить товар"/>
 </form>
+</div>
 </body>
 </html>

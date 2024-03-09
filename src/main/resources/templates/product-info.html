@@ -16,5 +16,8 @@
 <b>Цена: </b><span th:text="${product.price}"></span><br>
 <b>Город: </b><span th:text="${product.city}"></span><br>
 <b>Автор: </b><a th:href="@{/user/{id}(id=${product.user.id})}"> <span th:text="${product.user.name}"></span></a><br>
+<form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
+    <input type="submit" value="Удалить товар"/>
+</form>
 </body>
 </html>

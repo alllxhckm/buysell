@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
@@ -28,8 +29,10 @@ public class SecurityConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/", "/product/**", "/images/**", "/registration", "/user/**", "/error/**")
+                        .requestMatchers("/", "/product/*", "/images/**", "/registration", "/user/**", "/error/**")
                         .permitAll()
+                        .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/product/delete/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

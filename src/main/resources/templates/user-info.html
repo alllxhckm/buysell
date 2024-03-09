@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BUYSELL</title>
+</head>
+<body>
+<h1>BUYSELL</h1><hr>
+<h3>Подробная информация о пользователе <span th:text="${user.name}"></span></h3>
+<b>Номер телефона: </b> <span th:text="${user.phoneNumber}"></span><br>
+<b>Email: </b> <span th:text="${user.email}"></span><br>
+
+<h4>Товары пользователя <span th:text="${user.name}"></span></h4>
+<div th:each="product : ${products}">
+    <div>
+        <p><b th:text="${product.title}"></b> <span th:text="${product.price}"></span> BYN | <a th:href="@{/product/{id}(id=${product.id})}">Подробнее...</a></p>
+    </div>
+</div>
+<div th:if="${errorMessage}" style="color: red">
+    <h2 th:text="${errorMessage}"></h2>
+</div>
+</body>
+</html>

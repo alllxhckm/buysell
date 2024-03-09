@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BUYSELL</title>
+</head>
+<body>
+<h1>BUYSELL</h1><hr>
+<h4>Панель администратора</h4>
+<table border="1">
+    <tr>
+        <th>Email</th>
+        <th>Номер телефона</th>
+        <th>Активность</th>
+        <th>Роли</th>
+        <th>Бан</th>
+        <th>Редактирование</th>
+        <th>Подробная информация</th>
+    </tr>
+    <th:block th:if="${users.empty}">
+        <tr>
+            <td colspan="7">Пользователей нет</td>
+        </tr>
+    </th:block>
+    <th:block th:each="user : ${users}" th:unless="${users.empty}">
+        <tr>
+            <td th:text="${user.email}">Email</td>
+            <td th:text="${user.phoneNumber}">Phone Number</td>
+            <td th:text="${user.active ? 'true' : 'false'}">Active Status</td>
+            <td>
+                <span th:each="role, iterStat : ${user.roles}" th:text="${role} + (iterStat.last ? '' : ', ')">Role</span>
+            </td>
+            <td>
+                <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" value="Бан">
+                </form>
+            </td>
+            <td><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Редактирование</a></td>
+            <td><a th:href="@{/user/{id}(id=${user.id})}">Подробная информация</a></td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

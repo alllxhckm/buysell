@@ -5,22 +5,20 @@
 </head>
 <body>
 <h1>BUYSELL</h1><hr>
-<div>
-    <div th:switch="${user.email}">
-        <div th:case="null">
-            <!-- Если user.email равно null, показать ссылку на вход -->
-            <a th:href="@{/login}">Войти</a>
-        </div>
-        <div th:case="*">
-            <!-- Если user.email не равно null, показать информацию о пользователе и форму выхода -->
-            <h3>Имя пользователя: <i th:text="${user.name}"></i></h3>
-            <form action="/logout" method="post">
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                <input type="submit" value="Выйти"/>
-            </form>
-        </div>
+<div th:if="${user.email}">
+    <h3>Имя пользователя: <i th:text="${user.name}">Имя</i></h3>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="submit" value="Выйти"/>
+    </form>
+    <div th:if="${user.isAdmin()}">
+        <a href="/admin">Панель администратора</a>
     </div>
 </div>
+<div th:unless="${user.email}">
+    <a href="/login">Войти</a>
+</div>
+
 
 <hr>
 <h4>Товары со всей Беларуси</h4>

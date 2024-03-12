@@ -1,53 +1,76 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+          crossorigin="anonymous">
+
     <title>BUYSELL</title>
 </head>
 <body>
-<h1>BUYSELL</h1><hr>
-<div th:if="${user.email}">
-    <h3>Имя пользователя: <i th:text="${user.name}">Имя</i></h3>
-    <form action="/logout" method="post">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="submit" value="Выйти"/>
-    </form>
-    <div th:if="${user.isAdmin()}">
-        <a href="/admin">Панель администратора</a>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a th:href="@{/}">
+            <span class="navbar-brand mb-0 h1">BUYSELL</span>
+        </a>
+        <div th:if="${user.email}">
+            <div class="dropdown text-end">
+                <a th:href="@{/profile}">
+                    <img src="/static/images/avatar.png" alt="mdo"
+                         width="32" height="32" class="rounded-circle">
+                </a>
+            </div>
+        </div>
+        <div th:unless="${user.email}">
+            <button class="btn btn-light my-2 my-sm-0" type="button"
+                    onclick="window.location.href = '/login'">
+                Войти
+            </button>
+        </div>
     </div>
-</div>
-<div th:unless="${user.email}">
-    <a href="/login">Войти</a>
-</div>
-
-
+</nav>
+<div class="container mt-4">
+<h1 style="text-align: center">Поиск товаров</h1>
 <hr>
-<h4>Товары со всей Беларуси</h4>
-<form th:action="@{/}" method="get">
-    Поиск по названию объявления: <input type="text" th:name="title"/>
-    <input type="submit" value="Поиск"/>
-</form>
-<div th:each="product : ${products}">
-    <div>
-        <p><b th:text="${product.title}"></b> <span th:text="${product.price}"></span> BYN | <a th:href="@{/product/{id}(id=${product.id})}">Подробнее...</a></p>
+<form method="get" action="/">
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <input style="text-align:center;" type="text" th:name="title" class="form-control" placeholder="Я ищу...">
+        </div>
+        <button style="width: 100%" type="submit" class="btn btn-dark">Поиск</button>
     </div>
-</div>
-<div th:if="${#lists.isEmpty(products)}">
-    <h3>Товаров нет</h3>
-</div>
-<div th:if="${user.email != null}">
-<hr>
-<h3>Создать новый товар</h3>
-<form th:action="@{/product/create}" method="post" enctype="multipart/form-data">
-    Название объявления: <input type="text" th:name="title"/><br>
-    Описание объявления: <input type="text" th:name="description"/><br>
-    Цена: <input type="number" th:name="price"/><br>
-    Город: <input type="text" th:name="city"/><br>
-    Первая фотография: <input type="file" th:name="file1"/><br>
-    Вторая фотография: <input type="file" th:name="file2"/><br>
-    Третья фотография: <input type="file" th:name="file3"/><br>
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="submit" value="Добавить товар"/>
 </form>
+<hr>
+<div class="card-columns">
+    <div th:each="product : ${products}">
+        <a th:href="@{/product/{id}(id=${product.id})}" class="product-link">
+            <div class="card text-white bg-dark my-3 product">
+                <img th:src="@{/images/{imageId}(imageId=${product.previewImageId})}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.title}"></h5>
+                    <p class="card-text" th:text="${product.price} + ' BYN'"></p>
+                </div>
+                <div class="card-footer" th:text="${product.city}"></div>
+            </div>
+        </a>
+    </div>
+    <h1 style="text-align: center" th:unless="${products}">Не найдено</h1>
 </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -17,6 +19,14 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Principal principal,
+                          Model model) {
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("user", user);
+        return "profile";
     }
 
     @GetMapping("/registration")
